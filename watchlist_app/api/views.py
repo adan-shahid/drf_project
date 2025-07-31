@@ -1,29 +1,31 @@
 from watchlist_app.models import movie
 from watchlist_app.api.serializers import movieSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+#from rest_framework.decorators import api_view
 from rest_framework import status
 
+from rest_framework.views import APIView
 
-@api_view(['GET', 'POST', 'PUT'])
-def movieList(request):
-    if request.method == 'GET':
+
+class movieListAV(APIView):
+#INSTEAD OF USING THE IF CONDITION, I'VE DEFINED 'GET' METHOD.
+    def get(self, request):
         movies = movie.objects.all()
         serializer = movieSerializer(movies, many=True)
         return Response(serializer.data)
     
-    if request.method == 'POST':
+    def post(self, request):
         serializer = movieSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
-    
-  
-@api_view(['GET','PUT', 'DELETE'])
-def movie_details(request, pk):
-    if request.method == 'GET':
+        
+
+class movieDetailAV(APIView):
+
+    def get(self, request, pk):
         try:
             movies = movie.objects.get(pk=pk)
         except movie.DoesNotExist:
@@ -31,8 +33,8 @@ def movie_details(request, pk):
         
         serializers = movieSerializer(movies)
         return Response(serializers.data)
-        
-    if request.method == 'PUT':
+    
+    def put(self, request, pk):
         movies = movie.objects.get(pk=pk)
         serializer = movieSerializer(movies, data = request.data)
         if serializer.is_valid():
@@ -40,9 +42,61 @@ def movie_details(request, pk):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-    if request.method == 'DELETE':
+
+
+    def delete(self, request, pk):
         movies = movie.objects.get(pk=pk)
         movies.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+
+
+
+
+
+
+# @api_view(['GET', 'POST', 'PUT'])
+# def movieList(request):
+#     if request.method == 'GET':
+#         movies = movie.objects.all()
+#         serializer = movieSerializer(movies, many=True)
+#         return Response(serializer.data)
+    
+#     if request.method == 'POST':
+#         serializer = movieSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors)
+    
+  
+# @api_view(['GET','PUT', 'DELETE'])
+# def movie_details(request, pk):
+#     if request.method == 'GET':
+#         try:
+#             movies = movie.objects.get(pk=pk)
+#         except movie.DoesNotExist:
+#             return Response({'Error': 'Movie Not Found'}, status=status.HTTP_404_NOT_FOUND)
+        
+#         serializers = movieSerializer(movies)
+#         return Response(serializers.data)
+        
+#     if request.method == 'PUT':
+#         movies = movie.objects.get(pk=pk)
+#         serializer = movieSerializer(movies, data = request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+#     if request.method == 'DELETE':
+#         movies = movie.objects.get(pk=pk)
+#         movies.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
         
