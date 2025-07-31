@@ -3,6 +3,7 @@ from watchlist_app.models import movie
 from watchlist_app.api.serializers import movieSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 @api_view(['GET', 'POST', 'PUT'])
 def movieList(request):
@@ -22,7 +23,7 @@ def movieList(request):
    
 
 
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT', 'DELETE'])
 def movie_details(request, pk):
     if request.method == 'GET':
         movies = movie.objects.get(pk=pk)
@@ -37,3 +38,9 @@ def movie_details(request, pk):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+        
+    if request.method == 'DELETE':
+        movies = movie.objects.get(pk=pk)
+        movies.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
