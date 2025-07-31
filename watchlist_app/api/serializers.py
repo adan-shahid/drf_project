@@ -9,3 +9,10 @@ class movieSerializer(serializers.Serializer):
 #TILL NOW, WE'VE CREATED A SERIALIZER THAT WILL MAP ALL THE VALUES
     def create(self, validated_data):
         return movie.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.is_active = validated_data.get('is_active', instance.is_active)
+        instance.save()
+        return instance
