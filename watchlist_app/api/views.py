@@ -30,7 +30,8 @@ def movie_details(request, pk):
         return Response(serializers.data)
 
     if request.method == 'PUT':
-        serializer = movieSerializer(data = request.data)
+        movies = movie.objects.get(pk=pk)
+        serializer = movieSerializer(movies, data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
