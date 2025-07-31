@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from watchlist_app.models import movie
 
 class movieSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
@@ -6,3 +7,5 @@ class movieSerializer(serializers.Serializer):
     description = serializers.CharField()
     is_active = serializers.BooleanField()
 #TILL NOW, WE'VE CREATED A SERIALIZER THAT WILL MAP ALL THE VALUES
+    def create(self, validated_data):
+        return movie.objects.create(**validated_data)
