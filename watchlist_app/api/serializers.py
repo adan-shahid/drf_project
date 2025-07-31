@@ -7,6 +7,7 @@ class movieSerializer(serializers.Serializer):
     description = serializers.CharField()
     is_active = serializers.BooleanField()
 #TILL NOW, WE'VE CREATED A SERIALIZER THAT WILL MAP ALL THE VALUES
+
     def create(self, validated_data):
         return movie.objects.create(**validated_data)
     
@@ -17,8 +18,14 @@ class movieSerializer(serializers.Serializer):
         instance.save()
         return instance
     
-    def validate_name(self, value):
+    def validate(self, data): #OBJECT LEVEL VALIDATION
+        if data['name'] == data['description']:
+            raise serializers.ValidationError("Title & Description should not be same!")
+        else:
+            return data
 
+
+    def validate_name(self, value): #FIELD LEVEL VALIDATION ON THE FIELD 'name'
         if len(value) < 2:
             raise serializers.ValidationError('Name is too short')
         else:
