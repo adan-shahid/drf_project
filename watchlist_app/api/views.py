@@ -10,6 +10,8 @@ def movieList(request):
     serializers = movieSerializer(movies, many=True)
     return Response(serializers.data)
 
-
+@api_view()
 def movie_details(request, pk):
-    pass
+    movies = movie.objects.get(pk=pk)
+    serializers = movieSerializer(movies)
+    return Response(serializers.data)
