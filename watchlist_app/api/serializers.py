@@ -3,14 +3,14 @@ from watchlist_app.models import watchList, streamPlatform
 
 #NOW WE ARE GOING TO WRTIE MODEL SERIALIZER
 
-class watchListSerializer(serializers.ModelSerializer):
-    name_length = serializers.SerializerMethodField()
-
+class watchListSerializer(serializers.ModelSerializer): 
     class Meta:
         model = watchList
         fields = '__all__'
 
 class streamPlatformSerializer(serializers.ModelSerializer):
+    #'watchlist', IT IS THE SAME NAME AS WE PROVIDED IN THE MODELS. 'related_name'
+    watchlist = watchListSerializer(many=True, read_only=True)
     class Meta:
         model = streamPlatform
         fields = '__all__'

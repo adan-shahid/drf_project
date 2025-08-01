@@ -10,8 +10,8 @@ from rest_framework.views import APIView
 class watchListAV(APIView):
 #INSTEAD OF USING THE IF CONDITION, I'VE DEFINED 'GET' METHOD.
     def get(self, request):
-        movies = watchList.objects.all()
-        serializer = watchListSerializer(movies, many=True)
+        watchlist = watchList.objects.all()
+        serializer = watchListSerializer(watchlist, many=True)
         return Response(serializer.data)
     
     def post(self, request):
