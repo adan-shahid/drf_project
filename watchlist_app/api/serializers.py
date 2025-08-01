@@ -3,10 +3,16 @@ from watchlist_app.models import movie
 
 #NOW WE ARE GOING TO WRTIE MODEL SERIALIZER
 class movieSerializer(serializers.ModelSerializer):
+    name_length = serializers.SerializerMethodField()
+
+
     class Meta:
         model = movie
-        fields = ['id', 'name', 'description', 'is_active']
-        
+        fields = '__all__'
+    
+    def get_name_length(self, object): #THIS 'OBJECT' HAS ACCESS TO ALL OUR MODEL FIELDS
+        length = len(object.name)
+        return length
 
     def validate(self, data): #OBJECT LEVEL VALIDATION
         if data['name'] == data['description']:
