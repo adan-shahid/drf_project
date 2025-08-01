@@ -8,7 +8,7 @@ class watchListSerializer(serializers.ModelSerializer):
         model = watchList
         fields = '__all__'
 
-class streamPlatformSerializer(serializers.ModelSerializer):
+class streamPlatformSerializer(serializers.HyperlinkedModelSerializer):
     #'watchlist', IT IS THE SAME NAME AS WE PROVIDED IN THE MODELS. 'related_name'
     watchlist = watchListSerializer(many=True, read_only=True)
     class Meta:
