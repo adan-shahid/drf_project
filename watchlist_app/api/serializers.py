@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from watchlist_app.models import watchList
+from watchlist_app.models import watchList, streamPlatform
 
 #NOW WE ARE GOING TO WRTIE MODEL SERIALIZER
 
@@ -8,6 +8,11 @@ class watchListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = watchList
+        fields = '__all__'
+
+class streamPlatformSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = streamPlatform
         fields = '__all__'
     
   
