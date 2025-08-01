@@ -2,9 +2,9 @@ from rest_framework import serializers
 from watchlist_app.models import movie
 
 #NOW WE ARE GOING TO WRTIE MODEL SERIALIZER
+
 class movieSerializer(serializers.ModelSerializer):
     name_length = serializers.SerializerMethodField()
-
 
     class Meta:
         model = movie
@@ -26,8 +26,6 @@ class movieSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Name is too short')
         else:
             return value
-
-
 
 
 # class movieSerializer(serializers.Serializer):
