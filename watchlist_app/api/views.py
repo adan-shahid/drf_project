@@ -1,5 +1,5 @@
-from watchlist_app.models import movie
-from watchlist_app.api.serializers import movieSerializer
+from watchlist_app.models import watchList, streamPlatform
+from watchlist_app.api.serializers import watchListSerializer
 from rest_framework.response import Response
 #from rest_framework.decorators import api_view
 from rest_framework import status
@@ -7,15 +7,15 @@ from rest_framework import status
 from rest_framework.views import APIView
 
 
-class movieListAV(APIView):
+class watchListAV(APIView):
 #INSTEAD OF USING THE IF CONDITION, I'VE DEFINED 'GET' METHOD.
     def get(self, request):
-        movies = movie.objects.all()
-        serializer = movieSerializer(movies, many=True)
+        movies = watchList.objects.all()
+        serializer = watchListSerializer(movies, many=True)
         return Response(serializer.data)
     
     def post(self, request):
-        serializer = movieSerializer(data=request.data)
+        serializer = watchListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -27,16 +27,16 @@ class movieDetailAV(APIView):
 
     def get(self, request, pk):
         try:
-            movies = movie.objects.get(pk=pk)
-        except movie.DoesNotExist:
-            return Response({'Error': 'Movie Not Found'}, status=status.HTTP_404_NOT_FOUND)
+            movies = watchList.objects.get(pk=pk)
+        except watchList.DoesNotExist:
+            return Response({'Error': 'Not Found'}, status=status.HTTP_404_NOT_FOUND)
         
-        serializers = movieSerializer(movies)
+        serializers = watchListSerializer(movies)
         return Response(serializers.data)
     
     def put(self, request, pk):
-        movies = movie.objects.get(pk=pk)
-        serializer = movieSerializer(movies, data = request.data)
+        movies = watchList.objects.get(pk=pk)
+        serializer = watchListSerializer(movies, data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -45,7 +45,7 @@ class movieDetailAV(APIView):
 
 
     def delete(self, request, pk):
-        movies = movie.objects.get(pk=pk)
+        movies = watchList.objects.get(pk=pk)
         movies.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
