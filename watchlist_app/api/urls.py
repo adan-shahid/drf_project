@@ -1,5 +1,5 @@
 from django.urls import path
-from watchlist_app.api.views import watchListAV, movieDetailAV, streamPlatformAV, streamPlatformDetailsAV
+from watchlist_app.api.views import watchListAV, movieDetailAV, streamPlatformAV, streamPlatformDetailsAV, reviewList, reviewDetails
 
 
 urlpatterns = [
@@ -8,4 +8,7 @@ urlpatterns = [
 
     path('streamPlatform/', streamPlatformAV.as_view(), name="stream-platform"),
     path('streamPlatform/<int:pk>/', streamPlatformDetailsAV.as_view(), name="platform-details"),
+
+    path('review/', reviewList.as_view(), name='reviews'),
+    path('review/<int:pk>/', reviewDetails.as_view(), name='review-details'),
 ]

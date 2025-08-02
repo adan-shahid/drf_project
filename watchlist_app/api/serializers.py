@@ -1,7 +1,11 @@
 from rest_framework import serializers
 from watchlist_app.models import watchList, streamPlatform, Review
 
+
 #NOW WE ARE GOING TO WRTIE MODEL SERIALIZER
+
+
+
 
 class reviewSerializer(serializers.ModelSerializer):
     class Meta:

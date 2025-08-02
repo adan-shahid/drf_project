@@ -1,9 +1,8 @@
-from watchlist_app.models import watchList, streamPlatform
-from watchlist_app.api.serializers import watchListSerializer, streamPlatformSerializer
+from watchlist_app.models import watchList, streamPlatform, Review
+from watchlist_app.api.serializers import watchListSerializer, streamPlatformSerializer, reviewSerializer
 from rest_framework.response import Response
 #from rest_framework.decorators import api_view
-from rest_framework import status
-
+from rest_framework import status, generics, mixins
 from rest_framework.views import APIView
 
 
@@ -22,9 +21,7 @@ class watchListAV(APIView):
         else:
             return Response(serializer.errors)
         
-
 class movieDetailAV(APIView):
-
     def get(self, request, pk):
         try:
             movies = watchList.objects.get(pk=pk)
@@ -42,15 +39,13 @@ class movieDetailAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+        
     def delete(self, request, pk):
         movies = watchList.objects.get(pk=pk)
         movies.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 #WRITING THE VIEWS FOR STREAMPLATFORM SERIALIZER
-
 class streamPlatformAV(APIView):
     def get(self, request):
         platform = streamPlatform.objects.all()
@@ -65,14 +60,10 @@ class streamPlatformAV(APIView):
         else:
             return Response(serializer.errors)
         
-
 class streamPlatformDetailsAV(APIView):
-
     def get(self, request, pk):
-
         try:
             platform = streamPlatform.objects.get(pk=pk)
-
         except streamPlatform.DoesNotExist:
             return Response({'Error':'Not Found'}, status=status.HTTP_404_NOT_FOUND)
         
@@ -88,12 +79,32 @@ class streamPlatformDetailsAV(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def delete(self, request, pk):
         platform = streamPlatform.objects.get(pk=pk)
         platform.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+#NOW I AM WRITING THE VIEW FOR 'reviewSerializer'
+class reviewList(mixins.ListModelMixin,
+                       mixins.CreateModelMixin,
+                       generics.GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = reviewSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class reviewDetails(mixins.RetrieveModelMixin,
+                    generics.GenericAPIView):
+    
+    queryset = Review.objects.all()
+    serializer_class = reviewSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
 
 
