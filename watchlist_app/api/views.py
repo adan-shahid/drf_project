@@ -112,9 +112,13 @@ class streamPlatformDetailsAV(APIView):
 
 
 # NOW WE ARE USING GENERIC CLASS-BASED VIEWS.
-class reviewList(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
+class reviewList(generics.ListAPIView):
+    # queryset = Review.objects.all()
     serializer_class = reviewSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Review.objects.filter(watchlist=pk)
 
 
 class reviewDetails(generics.RetrieveUpdateDestroyAPIView):
