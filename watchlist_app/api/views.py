@@ -1,9 +1,13 @@
 from watchlist_app.models import watchList, streamPlatform, Review
-from watchlist_app.api.serializers import watchListSerializer, streamPlatformSerializer, reviewSerializer
+from watchlist_app.api.serializers import (watchListSerializer,
+                                            streamPlatformSerializer,
+                                            reviewSerializer)
 from rest_framework.response import Response
 #from rest_framework.decorators import api_view
 from rest_framework import status, generics, mixins
 from rest_framework.views import APIView
+
+
 
 
 class watchListAV(APIView):
@@ -84,27 +88,38 @@ class streamPlatformDetailsAV(APIView):
         platform.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-#NOW I AM WRITING THE VIEW FOR 'reviewSerializer'
-class reviewList(mixins.ListModelMixin,
-                       mixins.CreateModelMixin,
-                       generics.GenericAPIView):
-    queryset = Review.objects.all()
-    serializer_class = reviewSerializer
+# #NOW I AM WRITING THE VIEW FOR 'reviewSerializer'
+# class reviewList(mixins.ListModelMixin,
+#                        mixins.CreateModelMixin,
+#                        generics.GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = reviewSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         return self.create(request, *args, **kwargs)
 
-class reviewDetails(mixins.RetrieveModelMixin,
-                    generics.GenericAPIView):
+# class reviewDetails(mixins.RetrieveModelMixin,
+#                     generics.GenericAPIView):
     
+#     queryset = Review.objects.all()
+#     serializer_class = reviewSerializer
+
+#     def get(self, request, *args, **kwargs):
+#         return self.retrieve(request, *args, **kwargs)
+
+
+# NOW WE ARE USING GENERIC CLASS-BASED VIEWS.
+class reviewList(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = reviewSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+
+class reviewDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = reviewSerializer
 
 
 
