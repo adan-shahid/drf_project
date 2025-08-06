@@ -124,9 +124,10 @@ class reviewList(generics.ListAPIView):
     
 class reviewCreate(generics.CreateAPIView):
     serializer_class = reviewSerializer
-
+    def get_queryset(self):
+        return Review.objects.all()
+    
     def perform_create(self, serializer): #WE USE THIS 'perform_create' to overwrite this create method.
-
         pk = self.kwargs.get('pk') #ACCESSING THE PRIMARY KEY.
         movie = watchList.objects.get(pk=pk)
 
