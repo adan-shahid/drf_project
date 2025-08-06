@@ -8,6 +8,7 @@ from rest_framework import status, generics, mixins
 from rest_framework.views import APIView
 
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -117,13 +118,16 @@ class streamPlatformDetailsAV(APIView):
 class reviewList(generics.ListAPIView):
     # queryset = Review.objects.all()
     serializer_class = reviewSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
         return Review.objects.filter(watchlist=pk)
     
 class reviewCreate(generics.CreateAPIView):
+   
     serializer_class = reviewSerializer
+    
     def get_queryset(self):
         return Review.objects.all()
     
