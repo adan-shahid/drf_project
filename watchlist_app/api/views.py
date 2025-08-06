@@ -135,8 +135,6 @@ class reviewCreate(generics.CreateAPIView):
         review_queryset = Review.objects.filter(watchlist=movie, review_user=review_user )
         if review_queryset.exists():
             raise ValidationError("You have already reviewed this movie")
-        
-
         serializer.save(watchlist=movie, review_user=review_user)
 
 class reviewDetails(generics.RetrieveUpdateDestroyAPIView):
