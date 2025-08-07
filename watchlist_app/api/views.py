@@ -91,7 +91,8 @@ class streamPlatformDetailsAV(APIView):
         platform = streamPlatform.objects.get(pk=pk)
         platform.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+    
+    
 # #NOW I AM WRITING THE VIEW FOR 'reviewSerializer'
 # class reviewList(mixins.ListModelMixin,
 #                        mixins.CreateModelMixin,
@@ -143,7 +144,7 @@ class reviewCreate(generics.CreateAPIView):
         
         if movie.number_rating == 0:
             movie.avg_rating = serializer.validated_data['rating']
-            
+
         else:
             movie.avg_rating = (movie.avg_rating + serializer.validated_data['rating'])/2
 
