@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 
+from watchlist_app.api.permissions import AdminOrReadonly
 
 
 
@@ -144,8 +145,7 @@ class reviewCreate(generics.CreateAPIView):
 class reviewDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = reviewSerializer
-
-
+    permission_classes = [AdminOrReadonly]
 
 
 
