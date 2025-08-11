@@ -1,19 +1,13 @@
 from.serializers import userSerializer
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
 
+@api_view(['POST',])
+def registerUser(request):
+    if request.method == 'POST':
+        serializer = userSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return (serializer.data)
+     
 
-class userAV(APIView):
-    def get(self, request):
-        user = User.objects.all()
-        serializer = userSerializer(user, many=True)
-        return Response(serializer.data)
-    
-    # def post(self, request):
-    #     serializer = watchListSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     else:
-    #         return Response(serializer.errors)
