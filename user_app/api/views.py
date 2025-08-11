@@ -9,5 +9,6 @@ def registerUser(request):
         if serializer.is_valid():
             serializer.save()
             return (serializer.data)
+      
      
 
