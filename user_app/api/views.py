@@ -8,7 +8,7 @@ def registerUser(request):
         serializer = userSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return (serializer.data)
+            return Response(serializer.data)
       
      
 
