@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 class userSerializer(serializers.ModelSerializer):
+    #'password2' is the new field we are adding to  User model Manually.
+    password2 = serializers.CharField(style = {'input_type':'password'} ,write_only = True)
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['username', 'email' , 'password', 'password2']
