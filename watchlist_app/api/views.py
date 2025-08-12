@@ -10,11 +10,13 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
 
-from watchlist_app.api.permissions import AdminOrReadonly, ReviewUserOrReadonly
+from watchlist_app.api.permissions import IsAdminOrReadonly, IsReviewUserOrReadonly
 
 
 
 class watchListAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
+
 #INSTEAD OF USING THE IF CONDITION, I'VE DEFINED 'GET' METHOD.
     def get(self, request):
         watchlist = watchList.objects.all()
@@ -30,6 +32,7 @@ class watchListAV(APIView):
             return Response(serializer.errors)
         
 class movieDetailAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
     def get(self, request, pk):
         try:
             movies = watchList.objects.get(pk=pk)
@@ -55,6 +58,8 @@ class movieDetailAV(APIView):
     
 #WRITING THE VIEWS FOR STREAMPLATFORM SERIALIZER
 class streamPlatformAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
+
     def get(self, request):
         platform = streamPlatform.objects.all()
         serializer = streamPlatformSerializer(platform, many=True, context={'request': request})
@@ -69,6 +74,8 @@ class streamPlatformAV(APIView):
             return Response(serializer.errors)
         
 class streamPlatformDetailsAV(APIView):
+    permission_classes = [IsAdminOrReadonly]
+
     def get(self, request, pk):
         try:
             platform = streamPlatform.objects.get(pk=pk)
@@ -120,7 +127,7 @@ class streamPlatformDetailsAV(APIView):
 class reviewList(generics.ListAPIView):
     # queryset = Review.objects.all()
     serializer_class = reviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -129,8 +136,9 @@ class reviewList(generics.ListAPIView):
 class reviewCreate(generics.CreateAPIView):
    
     serializer_class = reviewSerializer
+    permission_classes = [IsAuthenticated]
     
-    def get_queryset(self):
+    def get_queryset(self): #WITHOUT THIS, DRF WILL NOT KNOW ON WHICH VIEW THIS IS OPERATING ON.
         return Review.objects.all()
     
     def perform_create(self, serializer): #WE USE THIS 'perform_create' to overwrite this create method.
@@ -156,7 +164,7 @@ class reviewCreate(generics.CreateAPIView):
 class reviewDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = reviewSerializer
-    permission_classes = [ReviewUserOrReadonly]
+    permission_classes = [IsReviewUserOrReadonly]
 
 
 
