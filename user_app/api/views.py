@@ -2,6 +2,8 @@ from.serializers import userSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
+from rest_framework import status
+
 
 
 
@@ -26,6 +28,13 @@ def registerUser(request):
             data= serializer.errors
         
         return Response(data)
-      
+    
+#WHEN WE LOGGED OUT, IT SHOULD DELETE THE TOKEN.
+@api_view(['POST',])
+def logout_view(request):
+    if request.method == 'POST':
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
+        
      
 
