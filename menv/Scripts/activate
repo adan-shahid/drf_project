@@ -40,10 +40,10 @@ deactivate nondestructive
 if [ "${OSTYPE:-}" = "cygwin" ] || [ "${OSTYPE:-}" = "msys" ] ; then
     # transform D:\path\to\venv to /d/path/to/venv on MSYS
     # and to /cygdrive/d/path/to/venv on Cygwin
-    export VIRTUAL_ENV=$(cygpath 'D:\Django\Drf_project\menv')
+    export VIRTUAL_ENV=$(cygpath 'E:\Projects\Django Rest Framework Project\drf_project\menv')
 else
     # use the path as-is
-    export VIRTUAL_ENV='D:\Django\Drf_project\menv'
+    export VIRTUAL_ENV='E:\Projects\Django Rest Framework Project\drf_project\menv'
 fi
 
 _OLD_VIRTUAL_PATH="$PATH"
