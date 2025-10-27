@@ -1,11 +1,22 @@
 from.serializers import userSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.authtoken.models import Token
+# from rest_framework.authtoken.models import Token
 from rest_framework import status
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
 
+def get_tokens_for_user(user):
+    if not user.is_active:
+        raise AuthenticationFailed("user is not active")
+    
+    refresh = RefreshToken.for_user(user)
 
+    return {
+        'refresh':str(refresh),
+        'access':str(refresh.access_token)
+    }
 
 @api_view(['POST',])
 def registerUser(request):
@@ -21,7 +32,12 @@ def registerUser(request):
             data['username'] = account.username
             data['email'] = account.email
 
-            token = Token.objects.get(user=account).key
+            # FOR SIMPLE TOKEN AUTHENTICATION.
+            # token = Token.objects.get(user=account).key
+            # data['token'] = token
+
+            # FOR SIMPLE JWT TOKEN AUTHENTICATION
+            token = get_tokens_for_user(account)
             data['token'] = token
 
         else:
