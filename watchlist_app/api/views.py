@@ -12,13 +12,13 @@ from rest_framework.permissions import IsAuthenticated
 
 from watchlist_app.api.permissions import IsAdminOrReadonly, IsReviewUserOrReadonly
 
-# from rest_framework.throttling import UserRateThrottle
+from rest_framework.throttling import UserRateThrottle
 
 
 
 class watchListAV(APIView):
     permission_classes = [IsAdminOrReadonly]
-    # throttle_classes = [UserRateThrottle]
+    throttle_classes = [UserRateThrottle]
 
 #INSTEAD OF USING THE IF CONDITION, I'VE DEFINED 'GET' METHOD.
     def get(self, request):
