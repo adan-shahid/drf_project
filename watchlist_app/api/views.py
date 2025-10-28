@@ -12,13 +12,15 @@ from rest_framework.permissions import IsAuthenticated
 
 from watchlist_app.api.permissions import IsAdminOrReadonly, IsReviewUserOrReadonly
 
-from rest_framework.throttling import UserRateThrottle
+# from rest_framework.throttling import UserRateThrottle
+
+from watchlist_app.api.throttling import reviewListThrottle, reviewCreateThrottle
 
 
 
 class watchListAV(APIView):
     permission_classes = [IsAdminOrReadonly]
-    throttle_classes = [UserRateThrottle]
+    # throttle_classes = [UserRateThrottle]
 
 #INSTEAD OF USING THE IF CONDITION, I'VE DEFINED 'GET' METHOD.
     def get(self, request):
@@ -130,7 +132,8 @@ class streamPlatformDetailsAV(APIView):
 class reviewList(generics.ListAPIView):
     # queryset = Review.objects.all()
     serializer_class = reviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    throttle_classes = [reviewListThrottle]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -140,6 +143,7 @@ class reviewCreate(generics.CreateAPIView):
    
     serializer_class = reviewSerializer
     permission_classes = [IsAuthenticated]
+    throttle_classes = [reviewCreateThrottle]
     
     def get_queryset(self): #WITHOUT THIS, DRF WILL NOT KNOW ON WHICH VIEW THIS IS OPERATING ON.
         return Review.objects.all()
