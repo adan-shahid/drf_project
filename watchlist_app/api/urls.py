@@ -2,7 +2,7 @@ from django.urls import path
 from watchlist_app.api.views import (watchListAV, movieDetailAV,
                                     streamPlatformAV, streamPlatformDetailsAV,
                                     reviewList, reviewDetails,
-                                    reviewCreate)
+                                    reviewCreate, userReview)
 
 urlpatterns = [
     path('list/', watchListAV.as_view(), name="movie-list"),
@@ -19,6 +19,9 @@ urlpatterns = [
     path('<int:pk>/review/', reviewList.as_view(), name="reviews"),
     #DETAILS OF INDIVIDUAL REVIEWS.
     path('review/<int:pk>/', reviewDetails.as_view(), name='review-details'),
+
+    path('review/<str:username>/', userReview.as_view(), name='user-review'),
+
 
     
 ]
