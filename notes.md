@@ -11,3 +11,4 @@ An important example of throttling is Medium.com. they only allow certain number
 **Filtering**
 review_user__username=username
 they come to 'username' userkey first and then comes to 'reviewuser' userkey.
+'review_user' is only used when there is foreign key.
