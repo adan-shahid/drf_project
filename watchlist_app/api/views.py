@@ -135,7 +135,7 @@ class userReview(generics.ListAPIView):
     def get_queryset(self):
         username = self.kwargs['username']
         #review_user, COMES FROM 'REVIEW' MODEL
-        return Review.objects.filter(review_user=username)
+        return Review.objects.filter(review_user__username=username)
 
 
 # NOW WE ARE USING GENERIC CLASS-BASED VIEWS.

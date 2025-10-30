@@ -7,3 +7,7 @@ JWT token can be stored in the local storage of browser, not in the database.
 Throttling--> it works similar to Authenticationhere but in this feature we have the power to restrict the number of requesnts a user can send. it is important to restrict because if we have open api, there are chances that a bot will send and x number of requests. 
 An important example of throttling is Medium.com. they only allow certain number of blog post reads. after that they ask us to create a free account.
 
+
+**Filtering**
+review_user__username=username
+they come to 'username' userkey first and then comes to 'reviewuser' userkey.
