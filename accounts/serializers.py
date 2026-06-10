@@ -12,4 +12,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'first_name', 'last_name', 'password', 'confirm_password']
         read_only_fields = ['id']
 
-        
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError('Passwords do not match.')
+        return data
+    
+    def create(self, validated_data):
+        validated_data.pop('confirm_password')
+        self.password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(self.password)
+        user.save()
+        return user
