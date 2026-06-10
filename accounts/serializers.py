@@ -24,3 +24,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.set_password(self.password)
         user.save()
         return user
+    
+class UserSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'full_name', 'created_at']
+        read_only_fields = ['id', 'created_at']
