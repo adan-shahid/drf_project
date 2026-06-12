@@ -34,12 +34,19 @@ class LogoutView(APIView):
             return Response('Refresh Token Required', status = status.HTTP_400_BAD_REQUEST)
         except TokenError:
             return Response('Invalid/Expired Token', status= status.HTTP_400_BAD_REQUEST)
-        
-         
-        
-         
 
 
+        
 
 class ProfileView(APIView):
-    pass 
+    def get(self, request):
+        serializer = UserSerializer(request.data)
+        return Response(serializer.data)
+    
+    def update(self, request):
+        serializer = UserSerializer(request.user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
+        else: 
