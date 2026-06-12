@@ -18,3 +18,11 @@ class RegisterView(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+class LogoutView(APIView):
+    pass 
+
+
+
+class ProfileView(APIView):
+    pass 
