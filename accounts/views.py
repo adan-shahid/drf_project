@@ -40,7 +40,7 @@ class LogoutView(APIView):
 
 class ProfileView(APIView):
     def get(self, request):
-        serializer = UserSerializer(request.data)
+        serializer = UserSerializer(request.user)
         return Response(serializer.data)
     
     def update(self, request):
@@ -49,4 +49,4 @@ class ProfileView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)
-        else: 
+        
