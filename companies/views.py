@@ -50,4 +50,39 @@ class CompanyDetailView(APIView):
         serializer = CompanySerializer(company)
         return Response(serializer.data)
     
+
+    def post(self, request, pk):
+        try:
+            company = self.get_object(pk, request.user)
+        except Company.DoesNotExist:
+            return Response(
+                {"detail":"Company not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = CompanySerializer(
+            company,
+            data=request.data
+        )
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(
+            serializer.errors,
+            status = status.HTTP_400_BAD_REQUEST
+        )
     
+
+    def delete(self, request, pk):
+        try:
+            company = self.get_object(pk, request.user)
+        except Company.DoesNotExist:
+            return Response(
+                {"detail":"Company not found"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        company.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
